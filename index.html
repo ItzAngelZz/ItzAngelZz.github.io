@@ -59,7 +59,7 @@
             max-height: 300px;
             border-radius: 12px;
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-            transform: rotate(-3deg); /* Inclina las imágenes hacia la izquierda */
+            transform: rotate(-3deg);
             cursor: pointer;
         }
         .gallery img:hover, .gallery video:hover {
@@ -79,6 +79,11 @@
             max-width: 45%;
             border-radius: 12px;
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+        .big-video {
+            margin-top: 40px;
+            width: 100%;
+            max-width: 800px;
         }
         #popup {
             position: fixed;
@@ -235,74 +240,43 @@
                 </video>
             </div>
         </div>
+        
+        <div class="big-video">
+            <video controls>
+                <source src="GabyMyLove.mp4" type="video/mp4">
+                Tu navegador no soporta la reproducción de videos.
+            </video>
+        </div>
     </div>
     
     <div id="fullscreen" class="fullscreen" onclick="closeFullscreen()">
-        <span class="close">&times;</span>
-        <img id="fullscreen-img" src="" alt="Fullscreen">
+        <span class="close" onclick="closeFullscreen()">&times;</span>
+        <img id="fullscreenImg" src="" alt="Imagen en pantalla completa">
     </div>
-
+    
     <script>
         function closePopup() {
             document.getElementById('popup').style.display = 'none';
-            startHearts();
         }
-        function showHiddenMessage() {
-            var message = document.getElementById('hiddenMessage');
-            if (message.classList.contains('hidden')) {
-                message.classList.remove('hidden');
-            } else {
-                message.classList.add('hidden');
-            }
+
+        function showLoveMessage() {
+            const loveText = document.getElementById('loveText');
+            loveText.innerText = "Querida Gaby, tu amor y tu amistad han sido un regalo increíble en mi vida. ¡Te quiero muchísimo!";
+            document.getElementById('loveMessage').classList.remove('hidden');
         }
-        function openFullscreen(imgSrc) {
-            var fullscreenImg = document.getElementById('fullscreen-img');
-            fullscreenImg.src = imgSrc;
+
+        function openFullscreen(src) {
+            const fullscreenImg = document.getElementById('fullscreenImg');
+            fullscreenImg.src = src;
             document.getElementById('fullscreen').style.display = 'flex';
         }
+
         function closeFullscreen() {
             document.getElementById('fullscreen').style.display = 'none';
         }
-        function showLoveMessage() {
-            var loveMessage = document.getElementById('loveMessage');
-            loveMessage.classList.remove('hidden');
-            animateText("Gracias por ser parte de mi vida. Te amo con todo mi corazón.");
-        }
-        function animateText(text) {
-            var loveText = document.getElementById('loveText');
-            loveText.innerHTML = '';
-            var index = 0;
-            var timer = setInterval(function() {
-                if (index < text.length) {
-                    loveText.innerHTML += text.charAt(index);
-                    index++;
-                } else {
-                    clearInterval(timer);
-                }
-            }, 100);
-        }
+
         function showFinalMessage() {
-            var finalMessage = document.createElement('p');
-            finalMessage.innerHTML = 'Gracias por todo, de verdad Te Amo';
-            finalMessage.style.fontSize = '1.5em';
-            finalMessage.style.marginTop = '20px';
-            document.getElementById('loveMessage').appendChild(finalMessage);
-            document.getElementById('loveMessage').removeChild(document.querySelector('.flower-button'));
-        }
-        function startHearts() {
-            setInterval(createHeart, 500);
-        }
-        function createHeart() {
-            var heart = document.createElement('div');
-            heart.className = 'heart';
-            heart.style.left = Math.random() * 100 + 'vw';
-            document.body.appendChild(heart);
-            setTimeout(function() {
-                heart.remove();
-            }, 5000);
-        }
-        window.onload = function() {
-            document.getElementById('popup').style.display = 'flex';
+            alert("¡Gracias por estos 3 meses maravillosos! Te amo, Mylove.");
         }
     </script>
 </body>
