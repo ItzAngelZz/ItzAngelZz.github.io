@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>El juego mi amor</title>
+    <style>
+        body {
+            background: linear-gradient(to right, #00c6ff, #0072ff); /* Degradado azul cian */
+            font-family: 'Arial', sans-serif;
+            text-align: center;
+            color: #fff;
+            margin: 0;
+            padding: 0;
+        }
+        .button {
+            background-color: #007bff; /* Azul */
+            border: none;
+            color: white;
+            padding: 15px 32px;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 16px;
+            margin: 4px 2px;
+            cursor: pointer;
+            border-radius: 12px;
+            transition: background-color 0.3s ease;
+        }
+        .button:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+<body>
+    <h1>¡Bienvenida al juego!</h1>
+    <p>Este juego es un juego de preguntas. Si respondes correctamente todas las preguntas, recibirás un regalo de mi parte. Te amo mucho, ¡suerte!</p>
+    <button class="button" onclick="startGame()">Entrar</button>
+
+    <script>
+        function startGame() {
+            alert("Comienza el juego. ¡Buena suerte!");
+            window.location.href = "preguntas.html"; // Asegúrate de tener un archivo preguntas.html para continuar.
+        }
+    </script>
+</body>
+</html>
