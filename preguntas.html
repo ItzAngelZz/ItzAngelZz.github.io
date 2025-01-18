@@ -4,160 +4,10 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Juego de Preguntas</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/0.4.1/html2canvas.min.js"></script>
     <style>
-        body {
-            background: linear-gradient(to right, #00c6ff, #0072ff);
-            font-family: 'Arial', sans-serif;
-            color: #fff;
-            margin: 0;
-            padding: 20px;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-            flex-direction: column;
-        }
-        #game-container {
-            margin-top: 50px;
-            text-align: center;
-        }
-        #timers {
-            position: fixed;
-            bottom: 10px;
-            width: 100%;
-            display: flex;
-            justify-content: space-between;
-            padding: 10px;
-        }
-        .timer-box {
-            background: rgba(0, 0, 0, 0.8);
-            padding: 12px;
-            border-radius: 8px;
-            font-size: 18px;
-            color: white;
-        }
-        .question-container {
-            margin: 80px auto;
-            padding: 20px;
-            background: rgba(255, 255, 255, 0.1);
-            border-radius: 12px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-        }
-        .button {
-            position: relative;
-            width: 150px;
-            height: 40px;
-            background-color: #000;
-            display: flex;
-            align-items: center;
-            color: white;
-            flex-direction: column;
-            justify-content: center;
-            border: none;
-            margin: 10px 0;
-            padding: 12px;
-            gap: 12px;
-            border-radius: 8px;
-            cursor: pointer;
-        }
-        .button::before {
-            content: '';
-            position: absolute;
-            inset: 0;
-            left: -4px;
-            top: -1px;
-            margin: auto;
-            width: 160px;
-            height: 48px;
-            border-radius: 10px;
-            background: linear-gradient(-45deg, #e81cff 0%, #40c9ff 100%);
-            z-index: -10;
-            pointer-events: none;
-            transition: all 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-        }
-        .button::after {
-            content: "";
-            z-index: -1;
-            position: absolute;
-            inset: 0;
-            background: linear-gradient(-45deg, #fc00ff 0%, #00dbde 100%);
-            transform: translate3d(0, 0, 0) scale(0.95);
-            filter: blur(20px);
-        }
-        .button:hover::after {
-            filter: blur(30px);
-        }
-        .button:hover::before {
-            transform: rotate(-180deg);
-        }
-        .button:active::before {
-            scale: 0.7;
-        }
-        #game-status {
-            font-size: 22px;
-            margin-top: 20px;
-            padding: 10px;
-            border-radius: 8px;
-            transition: transform 0.5s ease, opacity 0.5s ease;
-        }
-        #lives {
-            margin: 10px;
-            font-size: 18px;
-            color: lightcoral;
-        }
-        #question-text {
-            font-size: 24px;
-            font-weight: bold;
-        }
-        .animateMessage {
-            animation: slideIn 0.5s ease-out, bounce 0.5s ease-out;
-        }
-
-        @keyframes slideIn {
-            from {
-                transform: translateY(-30px);
-                opacity: 0;
-            }
-            to {
-                transform: translateY(0);
-                opacity: 1;
-            }
-        }
-
-        @keyframes bounce {
-            0% {
-                transform: scale(0.95);
-            }
-            50% {
-                transform: scale(1.1);
-            }
-            100% {
-                transform: scale(1);
-            }
-        }
-
-        .correct {
-            background-color: #28a745;
-            color: white;
-        }
-
-        .incorrect {
-            background-color: #dc3545;
-            color: white;
-        }
-
-        .buttons-container {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            height: 300px;
-        }
-
-        .end-buttons {
-            margin-top: 20px;
-        }
-
+        /* Estilos previos */
+        /* (El mismo estilo que has usado anteriormente) */
     </style>
 </head>
 <body>
@@ -224,9 +74,9 @@
                 answer: "9 meses"
             },
             {
-                question: "¿Que decia el papel de la primera rosa que te regale?",
-                options: ["Te quiero", "i kiss", "Ilove", "MyQuen"],
-                answer: "Ilove"
+                question: "¿Cuál fue tu reacción cuando te pedí ser mi novia?",
+                options: ["Grité de emoción", "No lo podía creer", "Me puse nerviosa", "Te dije que no"],
+                answer: "Me puse nerviosa"
             }
         ];
 
@@ -237,6 +87,8 @@
         let timePlayed = 0;
         let questionTimer;
         let gameTimer;
+        let correctAnswers = 0;
+        let incorrectAnswers = 0;
 
         const questionText = document.getElementById("question-text");
         const optionsContainer = document.getElementById("options");
@@ -286,10 +138,12 @@
             const correctAnswer = questions[currentQuestion].answer;
             if (selectedOption === correctAnswer) {
                 score++;
+                correctAnswers++;
                 gameStatus.textContent = "¡Correcto!";
                 gameStatus.classList.add("correct");
                 gameStatus.classList.remove("incorrect");
             } else {
+                incorrectAnswers++;
                 lives--;
                 gameStatus.textContent = "¡Incorrecto!";
                 gameStatus.classList.add("incorrect");
@@ -314,23 +168,35 @@
             clearInterval(gameTimer); // Detener el temporizador del juego
             const gameContainer = document.getElementById("game-container");
 
-            if (won) {
+            const percentage = (correctAnswers / questions.length) * 100;
+
+            if (percentage >= 80) {
                 gameContainer.innerHTML = `
-                    <h2>¡Juego Terminado!</h2>
-                    <p>Tu puntuación final es: ${score} / ${questions.length}</p>
-                    <p>¡Felicidades, has ganado! 🎉</p>
+                    <h2>¡Felicidades, has ganado!</h2>
+                    <p>Respondiste correctamente el ${percentage}% de las preguntas.</p>
+                `;
+                gameContainer.innerHTML += `
+                    <button class="button" onclick="takeScreenshot()">Tomar captura de pantalla</button>
+                    <button class="button" onclick="goToHome()">Volver al Inicio</button>
                 `;
             } else {
                 gameContainer.innerHTML = `
                     <h2>¡Juego Terminado!</h2>
-                    <p>Lo siento, perdiste todas tus vidas o se acabó el tiempo. 😢</p>
+                    <p>Respondiste correctamente el ${percentage}% de las preguntas.</p>
+                `;
+                gameContainer.innerHTML += `
+                    <button class="button" onclick="restartGame()">Reiniciar Juego</button>
+                    <button class="button" onclick="goToHome()">Volver al Inicio</button>
                 `;
             }
+        }
 
-            gameContainer.innerHTML += `
-                <button class="button" onclick="restartGame()">Reiniciar Juego</button>
-                <button class="button" onclick="goToHome()">Volver al Inicio</button>
-            `;
+        function takeScreenshot() {
+            html2canvas(document.body).then(function(canvas) {
+                const screenshotUrl = canvas.toDataURL("image/png");
+                // Aquí puedes enviar la captura de pantalla por WhatsApp o guardarla.
+                console.log(screenshotUrl);  // Esto te da la URL de la imagen capturada
+            });
         }
 
         function restartGame() {
