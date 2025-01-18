@@ -89,13 +89,72 @@
             scale: 0.7;
         }
         #game-status {
-            font-size: 20px;
+            font-size: 22px;
             margin-top: 20px;
+            padding: 10px;
+            border-radius: 8px;
+            transition: transform 0.5s ease, opacity 0.5s ease;
         }
         #lives {
             margin: 10px;
             font-size: 18px;
             color: lightcoral;
+        }
+        #question-text {
+            font-size: 24px;
+            font-weight: bold;
+        }
+        #timers {
+            position: fixed;
+            bottom: 0;
+            width: 100%;
+            display: flex;
+            justify-content: space-between;
+            padding: 10px 20px;
+        }
+        #time-played, #time-left {
+            background: rgba(0, 0, 0, 0.8);
+            padding: 12px;
+            border-radius: 8px;
+            font-size: 18px;
+            color: white;
+        }
+        /* Animación de mensaje */
+        .animateMessage {
+            animation: slideIn 0.5s ease-out, bounce 0.5s ease-out;
+        }
+
+        @keyframes slideIn {
+            from {
+                transform: translateY(-30px);
+                opacity: 0;
+            }
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+
+        @keyframes bounce {
+            0% {
+                transform: scale(0.95);
+            }
+            50% {
+                transform: scale(1.1);
+            }
+            100% {
+                transform: scale(1);
+            }
+        }
+
+        .correct {
+            background-color: #28a745;
+            color: white;
+        }
+
+        .incorrect {
+            background-color: #dc3545;
+            color: white;
         }
     </style>
 </head>
@@ -103,11 +162,11 @@
     <h1>Juego de Preguntas</h1>
     <div id="game-container">
         <div id="lives">Vidas restantes: 3</div>
+        <div id="game-status" style="display: none;"></div>
         <div id="question-container" class="question-container">
             <p id="question-text">Cargando pregunta...</p>
             <div id="options"></div>
         </div>
-        <p id="game-status"></p>
     </div>
 
     <div id="timers">
@@ -222,13 +281,16 @@
             if (selectedOption === currentQuestion.answer) {
                 score++;
                 statusText.textContent = "¡Correcto! 🎉";
-                statusText.style.color = "lightgreen";
+                statusText.className = "correct animateMessage";  // Correct message style and animation
             } else {
                 lives--;
                 document.getElementById("lives").textContent = `Vidas restantes: ${lives}`;
                 statusText.textContent = "Incorrecto 😢";
-                statusText.style.color = "red";
+                statusText.className = "incorrect animateMessage";  // Incorrect message style and animation
             }
+
+            // Show status message
+            statusText.style.display = "block";
 
             clearInterval(questionTimer);
             setTimeout(nextQuestion, 1000);
@@ -239,7 +301,7 @@
             const statusText = document.getElementById("game-status");
 
             if (currentQuestionIndex < questions.length) {
-                statusText.textContent = "";
+                statusText.style.display = "none"; // Hide message before the next question
                 loadQuestion();
             } else {
                 endGame(true);
@@ -293,6 +355,7 @@
                     const statusText = document.getElementById("game-status");
                     statusText.textContent = "Se acabó el tiempo 😢";
                     statusText.style.color = "red";
+                    statusText.style.display = "block";
                     setTimeout(nextQuestion, 1000);
                 }
             }, 1000);
