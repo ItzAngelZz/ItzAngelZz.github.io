@@ -119,7 +119,6 @@
             font-size: 18px;
             color: white;
         }
-        /* Animación de mensaje */
         .animateMessage {
             animation: slideIn 0.5s ease-out, bounce 0.5s ease-out;
         }
@@ -157,110 +156,6 @@
             color: white;
         }
 
-        /* Animación de carga */
-        .loader {
-            width: 112px;
-            height: 112px;
-            margin: 0 auto;
-        }
-
-        .box1,
-        .box2,
-        .box3 {
-            border: 16px solid #f5f5f5;
-            box-sizing: border-box;
-            position: absolute;
-            display: block;
-        }
-
-        .box1 {
-            width: 112px;
-            height: 48px;
-            margin-top: 64px;
-            margin-left: 0px;
-            animation: abox1 4s 1s forwards ease-in-out infinite;
-        }
-
-        .box2 {
-            width: 48px;
-            height: 48px;
-            margin-top: 0px;
-            margin-left: 0px;
-            animation: abox2 4s 1s forwards ease-in-out infinite;
-        }
-
-        .box3 {
-            width: 48px;
-            height: 48px;
-            margin-top: 0px;
-            margin-left: 64px;
-            animation: abox3 4s 1s forwards ease-in-out infinite;
-        }
-
-        @keyframes abox1 {
-            0% {
-                width: 112px;
-                height: 48px;
-                margin-top: 64px;
-                margin-left: 0px;
-            }
-            12.5% {
-                width: 48px;
-                height: 48px;
-                margin-top: 64px;
-                margin-left: 0px;
-            }
-            100% {
-                width: 48px;
-                height: 48px;
-                margin-top: 64px;
-                margin-left: 0px;
-            }
-        }
-
-        @keyframes abox2 {
-            0% {
-                width: 48px;
-                height: 48px;
-                margin-top: 0px;
-                margin-left: 0px;
-            }
-            12.5% {
-                width: 48px;
-                height: 48px;
-                margin-top: 0px;
-                margin-left: 0px;
-            }
-            100% {
-                width: 48px;
-                height: 48px;
-                margin-top: 0px;
-                margin-left: 64px;
-            }
-        }
-
-        @keyframes abox3 {
-            0% {
-                width: 48px;
-                height: 48px;
-                margin-top: 0px;
-                margin-left: 64px;
-            }
-            12.5% {
-                width: 48px;
-                height: 48px;
-                margin-top: 0px;
-                margin-left: 64px;
-            }
-            100% {
-                width: 112px;
-                height: 48px;
-                margin-top: 64px;
-                margin-left: 0px;
-            }
-        }
-
-        /* Centrado de los botones */
         .buttons-container {
             display: flex;
             flex-direction: column;
@@ -269,7 +164,6 @@
             height: 300px;
         }
 
-        /* Botones de fin de juego */
         .end-buttons {
             margin-top: 20px;
         }
@@ -283,7 +177,6 @@
         <div id="question-container" class="question-container">
             <p id="question-text">Cargando pregunta...</p>
             <div id="options" class="buttons-container"></div>
-            <!-- Animación de espera -->
             <div id="loader" style="display: none;">
                 <div class="loader">
                     <div class="box1"></div>
@@ -368,31 +261,28 @@
         const timePlayedContainer = document.getElementById("time-played");
         const timeLeftContainer = document.getElementById("time-left");
 
-        // Función que actualiza el tiempo
         function updateTimer() {
             if (totalTime > 0) {
                 totalTime--;
                 timeLeftContainer.textContent = `Tiempo restante: ${totalTime}s`;
             } else {
                 clearInterval(timer);
-                endGame();
+                endGame(false); // Se acaba el tiempo
             }
         }
 
-        // Función para iniciar el juego
         function startGame() {
             timer = setInterval(updateTimer, 1000);
             loadQuestion();
         }
 
-        // Función para cargar la siguiente pregunta con retraso
         function loadQuestion() {
-            loader.style.display = "block"; // Mostrar la animación de carga
+            loader.style.display = "block";
             setTimeout(() => {
-                loader.style.display = "none"; // Ocultar la animación de carga
+                loader.style.display = "none";
                 const current = questions[currentQuestion];
                 questionText.textContent = current.question;
-                optionsContainer.innerHTML = ""; // Limpiar opciones anteriores
+                optionsContainer.innerHTML = "";
 
                 current.options.forEach(option => {
                     const optionButton = document.createElement("button");
@@ -401,10 +291,9 @@
                     optionButton.onclick = () => checkAnswer(option);
                     optionsContainer.appendChild(optionButton);
                 });
-            }, 3000); // 3 segundos de retraso
+            }, 3000);
         }
 
-        // Función para comprobar la respuesta
         function checkAnswer(selectedOption) {
             const correctAnswer = questions[currentQuestion].answer;
             if (selectedOption === correctAnswer) {
@@ -423,50 +312,46 @@
             setTimeout(() => {
                 gameStatus.style.display = "none";
                 if (lives <= 0 || currentQuestion === questions.length - 1) {
-                    endGame();
+                    endGame(false); // Juego perdido por vidas agotadas o fin de las preguntas
                 } else {
                     currentQuestion++;
                     loadQuestion();
                 }
-            }, 2000);
+            }, 1500);
             livesContainer.textContent = `Vidas restantes: ${lives}`;
         }
 
-        // Función para terminar el juego
-        function endGame() {
+        function endGame(won) {
             clearInterval(timer);
-            gameStatus.textContent = `Fin del juego. Tu puntuación es: ${score}`;
-            gameStatus.classList.remove("animateMessage");
-            gameStatus.style.display = "block";
+            const gameContainer = document.getElementById("game-container");
 
-            // Mostrar botones de reiniciar y regresar al inicio
-            const restartButton = document.createElement("button");
-            restartButton.textContent = "Reiniciar juego";
-            restartButton.onclick = restartGame;
+            if (won) {
+                gameContainer.innerHTML = `
+                    <h2>¡Juego Terminado!</h2>
+                    <p>Tu puntuación final es: ${score} / ${questions.length}</p>
+                    <p>¡Felicidades, has ganado! 🎉</p>
+                `;
+            } else {
+                gameContainer.innerHTML = `
+                    <h2>¡Juego Terminado!</h2>
+                    <p>Lo siento, perdiste todas tus vidas o se acabó el tiempo. 😢</p>
+                `;
+            }
 
-            const backToStartButton = document.createElement("button");
-            backToStartButton.textContent = "Regresar al inicio";
-            backToStartButton.onclick = () => window.location.href = "index.html";
-
-            const endButtons = document.createElement("div");
-            endButtons.classList.add("end-buttons");
-            endButtons.appendChild(restartButton);
-            endButtons.appendChild(backToStartButton);
-            document.getElementById("game-container").appendChild(endButtons);
+            gameContainer.innerHTML += `
+                <button class="button" onclick="restartGame()">Reiniciar Juego</button>
+                <button class="button" onclick="goToHome()">Volver al Inicio</button>
+            `;
         }
 
-        // Función para reiniciar el juego
         function restartGame() {
-            currentQuestion = 0;
-            score = 0;
-            lives = 3;
-            totalTime = 30;
-            timePlayed = 0;
-            document.getElementById("game-container").innerHTML = "";
-            startGame();
+            location.reload();
         }
 
-        // Iniciar el juego
+        function goToHome() {
+            window.location.href = "index.html"; // Redirige al archivo index.html
+        }
+
         startGame();
     </script>
 </body>
