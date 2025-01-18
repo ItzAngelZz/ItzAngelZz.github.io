@@ -236,6 +236,7 @@
         let totalTime = 30;
         let timePlayed = 0;
         let questionTimer;
+        let gameTimer;
 
         const questionText = document.getElementById("question-text");
         const optionsContainer = document.getElementById("options");
@@ -260,13 +261,14 @@
         }
 
         function startGame() {
-            setInterval(updateGameTimer, 1000); // Timer general para todo el juego
+            gameTimer = setInterval(updateGameTimer, 1000); // Timer general para todo el juego
             loadQuestion();
         }
 
         function loadQuestion() {
             totalTime = 30; // Reinicia el temporizador para la nueva pregunta
-            questionTimer = setInterval(updateQuestionTimer, 1000);
+            clearInterval(questionTimer); // Detenemos el temporizador anterior
+            questionTimer = setInterval(updateQuestionTimer, 1000); // Iniciamos uno nuevo
             const current = questions[currentQuestion];
             questionText.textContent = current.question;
             optionsContainer.innerHTML = "";
@@ -309,6 +311,7 @@
 
         function endGame(won) {
             clearInterval(questionTimer); // Detener el temporizador de la pregunta
+            clearInterval(gameTimer); // Detener el temporizador del juego
             const gameContainer = document.getElementById("game-container");
 
             if (won) {
