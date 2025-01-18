@@ -49,7 +49,7 @@
             flex-direction: column;
             justify-content: center;
             border: none;
-            margin: 15px 0;
+            margin: 10px 0;
             padding: 12px;
             gap: 12px;
             border-radius: 8px;
@@ -259,6 +259,20 @@
                 margin-left: 0px;
             }
         }
+
+        /* Centrado de los botones */
+        .buttons-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 300px;
+        }
+
+        /* Botones de fin de juego */
+        .end-buttons {
+            margin-top: 20px;
+        }
     </style>
 </head>
 <body>
@@ -268,7 +282,7 @@
         <div id="game-status" style="display: none;"></div>
         <div id="question-container" class="question-container">
             <p id="question-text">Cargando pregunta...</p>
-            <div id="options"></div>
+            <div id="options" class="buttons-container"></div>
             <!-- Animación de espera -->
             <div id="loader" style="display: none;">
                 <div class="loader">
@@ -424,6 +438,32 @@
             gameStatus.textContent = `Fin del juego. Tu puntuación es: ${score}`;
             gameStatus.classList.remove("animateMessage");
             gameStatus.style.display = "block";
+
+            // Mostrar botones de reiniciar y regresar al inicio
+            const restartButton = document.createElement("button");
+            restartButton.textContent = "Reiniciar juego";
+            restartButton.onclick = restartGame;
+
+            const backToStartButton = document.createElement("button");
+            backToStartButton.textContent = "Regresar al inicio";
+            backToStartButton.onclick = () => window.location.href = "index.html";
+
+            const endButtons = document.createElement("div");
+            endButtons.classList.add("end-buttons");
+            endButtons.appendChild(restartButton);
+            endButtons.appendChild(backToStartButton);
+            document.getElementById("game-container").appendChild(endButtons);
+        }
+
+        // Función para reiniciar el juego
+        function restartGame() {
+            currentQuestion = 0;
+            score = 0;
+            lives = 3;
+            totalTime = 30;
+            timePlayed = 0;
+            document.getElementById("game-container").innerHTML = "";
+            startGame();
         }
 
         // Iniciar el juego
