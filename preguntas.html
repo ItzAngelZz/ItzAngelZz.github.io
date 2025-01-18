@@ -114,19 +114,54 @@
     <script>
         const questions = [
             {
-                question: "¿Cuál es el color favorito de Gabriela?",
-                options: ["Rojo", "Azul", "Morado", "Rosa"],
-                answer: "Rosa"
+                question: "¿Cuándo nos conocimos?",
+                options: ["15 de abril", "20 de abril", "25 de mayo", "10 de marzo"],
+                answer: "20 de abril"
             },
             {
-                question: "¿Cuándo fue nuestra primera cita?",
-                options: ["14 de Febrero", "24 de Abril", "1 de Mayo", "31 de Diciembre"],
-                answer: "24 de Abril"
+                question: "¿Dónde nos besamos por primera vez?",
+                options: ["En el parque", "En un sofá", "En la playa", "En un cine"],
+                answer: "En un sofá"
             },
             {
-                question: "¿Cómo me llamas cariñosamente?",
-                options: ["Corazón de melón", "Mi Reina", "Mi Amor", "Todas las anteriores"],
-                answer: "Todas las anteriores"
+                question: "¿Qué pasó en nuestra primera cita?",
+                options: ["Me caí de la silla", "No pude ir por pena", "Nos perdimos", "Pedí una pizza equivocada"],
+                answer: "No pude ir por pena"
+            },
+            {
+                question: "¿Cómo te decía cuando empezamos a ser novios?",
+                options: ["Corazón", "Amor", "MyLove", "Mi cielo"],
+                answer: "MyLove"
+            },
+            {
+                question: "¿Cuál fue el primer regalo que te di?",
+                options: ["Un anillo", "Un peluche", "Un libro", "Un perfume"],
+                answer: "Un peluche"
+            },
+            {
+                question: "¿Cuántos hijos tenemos?",
+                options: ["2", "4", "3", "5"],
+                answer: "4"
+            },
+            {
+                question: "¿Cuál fue la primera película que vimos?",
+                options: ["Titanic", "Satan", "The Notebook", "Inception"],
+                answer: "Satan"
+            },
+            {
+                question: "¿Cuál fue la película que nunca terminamos de ver?",
+                options: ["Toy Story", "Up", "Los Increíbles", "Frozen"],
+                answer: "Up"
+            },
+            {
+                question: "¿Cuántos meses llevamos juntos?",
+                options: ["5 meses", "10 meses", "9 meses", "12 meses"],
+                answer: "9 meses"
+            },
+            {
+                question: "¿Cómo se llama nuestro hijo aguacate?",
+                options: ["Pepe", "Juanito", "Sr. Cara de Aguacate", "Luisito"],
+                answer: "Sr. Cara de Aguacate"
             }
         ];
 
@@ -235,7 +270,7 @@
         }
 
         function goToHome() {
-            alert("Volver al inicio. Aquí agregarías la lógica para redirigir al usuario.");
+            window.location.href = "index.html"; // Redirige al archivo index.html
         }
 
         function startQuestionTimer() {
