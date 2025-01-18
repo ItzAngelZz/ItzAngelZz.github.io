@@ -11,7 +11,7 @@
             font-family: 'Arial', sans-serif;
             text-align: center;
             color: #fff;
-            overflow: hidden; /* Oculta el scroll */
+            overflow: auto; /* Oculta el scroll */
             margin: 0;
             padding: 0;
         }
@@ -132,7 +132,7 @@
     <div id="password-popup">
         <div id="password-content">
             <h2>Introduce la contraseña para continuar:</h2>
-            <input type="password" id="password" placeholder="aun no es hora">
+            <input type="password" id="password" placeholder="(aun no es hora)">
             <button onclick="checkPassword()">Entrar</button>
             <p id="error-message" class="hidden"></p>
         </div>
