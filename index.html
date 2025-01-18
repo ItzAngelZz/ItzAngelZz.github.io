@@ -269,7 +269,7 @@ body {
 <body>
     <div id="popup">
         <div id="popup-content">
-            <p>Antes de todo, muchas gracias por todo estos 9 meses y espero cumplamos más mi amor.</p>
+            <p>Antes de todo, muchas gracias por todo estos 9 meses y espero cumplamos más mi amor</p>
             <button class="flower-button" onclick="closePopup()">Continuar <img src="flower.png" alt="Flor" class="flower-icon"></button>
         </div>
     </div>
@@ -348,6 +348,24 @@ body {
         function showFinalMessage() {
             alert("¡Gracias por estos 9 meses Tan Especiales! Te amo, Mylove.");
         }
+
+        document.addEventListener("DOMContentLoaded", function () {
+        const container = document.querySelector(".falling-hearts");
+
+        // Generar corazones
+        for (let i = 0; i < 50; i++) { // Cambia 50 por la cantidad deseada
+            const heart = document.createElement("div");
+            heart.classList.add("heart");
+
+            // Posiciones y duraciones aleatorias
+            heart.style.left = Math.random() * 100 + "vw";
+            heart.style.animationDuration = Math.random() * 5 + 3 + "s"; // Entre 3s y 8s
+            heart.style.animationDelay = Math.random() * 5 + "s"; // Hasta 5s de demora
+
+            container.appendChild(heart);
+        }
+    });
     </script>
+    
 </body>
 </html>
