@@ -288,20 +288,20 @@ body {
         
         <div class="gallery">
             <h2 class="section-title"></h2>
-            <img src="foto1.jpg" alt="Foto 1" onclick="openFullscreen('foto1.jpg')">
-            <img src="foto2.jpg" alt="Foto 2" onclick="openFullscreen('foto2.jpg')">
-            <img src="foto3.jpg" alt="Foto 3" onclick="openFullscreen('foto3.jpg')">
+            <img src="27E89A51-9466-462A-A113-6A66C1B0312D.jpeg" alt="Foto 1" onclick="openFullscreen('foto1.jpg')">
+            <img src="EAA061DC-3C0A-45F0-A66A-01A055547EDD.jpeg" alt="Foto 2" onclick="openFullscreen('foto2.jpg')">
+            <img src="IMG_0336.jpeg" alt="Foto 3" onclick="openFullscreen('foto3.jpg')">
         </div>
         
         <div class="gallery">
             <h2 class="section-title"></h2>
             <div class="videos">
                 <video controls>
-                    <source src="tu-video.mp4" type="video/mp4">
+                    <source src="657bbb82b80c467db8b07ee1ba881981.mov" type="video/mp4">
                     Tu navegador no soporta la reproducción de videos.
                 </video>
                 <video controls>
-                    <source src="video2.mp4" type="video/mp4">
+                    <source src="fa0d4bb2aa2b4c9b8467de0ee8c7d114.mov" type="video/mp4">
                     Tu navegador no soporta la reproducción de videos.
                 </video>
             </div>
@@ -348,23 +348,6 @@ body {
         function showFinalMessage() {
             alert("¡Gracias por estos 9 meses Tan Especiales! Te amo, Mylove.");
         }
-
-        document.addEventListener("DOMContentLoaded", function () {
-        const container = document.querySelector(".falling-hearts");
-
-        // Generar corazones
-        for (let i = 0; i < 50; i++) { // Cambia 50 por la cantidad deseada
-            const heart = document.createElement("div");
-            heart.classList.add("heart");
-
-            // Posiciones y duraciones aleatorias
-            heart.style.left = Math.random() * 100 + "vw";
-            heart.style.animationDuration = Math.random() * 5 + 3 + "s"; // Entre 3s y 8s
-            heart.style.animationDelay = Math.random() * 5 + "s"; // Hasta 5s de demora
-
-            container.appendChild(heart);
-        }
-    });
     </script>
     
 </body>
