@@ -156,6 +156,109 @@
             background-color: #dc3545;
             color: white;
         }
+
+        /* Animación de carga */
+        .loader {
+            width: 112px;
+            height: 112px;
+            margin: 0 auto;
+        }
+
+        .box1,
+        .box2,
+        .box3 {
+            border: 16px solid #f5f5f5;
+            box-sizing: border-box;
+            position: absolute;
+            display: block;
+        }
+
+        .box1 {
+            width: 112px;
+            height: 48px;
+            margin-top: 64px;
+            margin-left: 0px;
+            animation: abox1 4s 1s forwards ease-in-out infinite;
+        }
+
+        .box2 {
+            width: 48px;
+            height: 48px;
+            margin-top: 0px;
+            margin-left: 0px;
+            animation: abox2 4s 1s forwards ease-in-out infinite;
+        }
+
+        .box3 {
+            width: 48px;
+            height: 48px;
+            margin-top: 0px;
+            margin-left: 64px;
+            animation: abox3 4s 1s forwards ease-in-out infinite;
+        }
+
+        @keyframes abox1 {
+            0% {
+                width: 112px;
+                height: 48px;
+                margin-top: 64px;
+                margin-left: 0px;
+            }
+            12.5% {
+                width: 48px;
+                height: 48px;
+                margin-top: 64px;
+                margin-left: 0px;
+            }
+            100% {
+                width: 48px;
+                height: 48px;
+                margin-top: 64px;
+                margin-left: 0px;
+            }
+        }
+
+        @keyframes abox2 {
+            0% {
+                width: 48px;
+                height: 48px;
+                margin-top: 0px;
+                margin-left: 0px;
+            }
+            12.5% {
+                width: 48px;
+                height: 48px;
+                margin-top: 0px;
+                margin-left: 0px;
+            }
+            100% {
+                width: 48px;
+                height: 48px;
+                margin-top: 0px;
+                margin-left: 64px;
+            }
+        }
+
+        @keyframes abox3 {
+            0% {
+                width: 48px;
+                height: 48px;
+                margin-top: 0px;
+                margin-left: 64px;
+            }
+            12.5% {
+                width: 48px;
+                height: 48px;
+                margin-top: 0px;
+                margin-left: 64px;
+            }
+            100% {
+                width: 112px;
+                height: 48px;
+                margin-top: 64px;
+                margin-left: 0px;
+            }
+        }
     </style>
 </head>
 <body>
@@ -166,6 +269,14 @@
         <div id="question-container" class="question-container">
             <p id="question-text">Cargando pregunta...</p>
             <div id="options"></div>
+            <!-- Animación de espera -->
+            <div id="loader" style="display: none;">
+                <div class="loader">
+                    <div class="box1"></div>
+                    <div class="box2"></div>
+                    <div class="box3"></div>
+                </div>
+            </div>
         </div>
     </div>
 
@@ -222,153 +333,101 @@
                 answer: "9 meses"
             },
             {
-                question: "¿Cómo se llama nuestro hijo aguacate?",
-                options: ["Pepe", "Juanito", "Sr. Cara de Aguacate", "Luisito"],
-                answer: "Sr. Cara de Aguacate"
+                question: "¿Cuál fue tu reacción cuando te pedí ser mi novia?",
+                options: ["Grité de emoción", "No lo podía creer", "Me puse nerviosa", "Te dije que no"],
+                answer: "Me puse nerviosa"
             }
         ];
 
-        let currentQuestionIndex = 0;
+        let currentQuestion = 0;
         let score = 0;
         let lives = 3;
-        let questionTimer;
-        let totalTimePlaying = 0;
-        let totalTimer;
-        const questionTimeLimit = 30;
+        let totalTime = 30;
+        let timePlayed = 0;
+        let timer;
 
-        function updateTotalTimePlaying() {
-            totalTimePlaying++;
-            document.getElementById("time-played").textContent = `Tiempo jugando: ${totalTimePlaying}s`;
-        }
+        const questionText = document.getElementById("question-text");
+        const optionsContainer = document.getElementById("options");
+        const loader = document.getElementById("loader");
+        const gameStatus = document.getElementById("game-status");
+        const livesContainer = document.getElementById("lives");
+        const timePlayedContainer = document.getElementById("time-played");
+        const timeLeftContainer = document.getElementById("time-left");
 
-        function startTotalTimer() {
-            totalTimer = setInterval(updateTotalTimePlaying, 1000);
-        }
-
-        function loadQuestion() {
-            if (lives === 0) {
-                endGame(false);
-                return;
+        // Función que actualiza el tiempo
+        function updateTimer() {
+            if (totalTime > 0) {
+                totalTime--;
+                timeLeftContainer.textContent = `Tiempo restante: ${totalTime}s`;
+            } else {
+                clearInterval(timer);
+                endGame();
             }
-
-            resetQuestionTimer();
-            startQuestionTimer();
-
-            const currentQuestion = questions[currentQuestionIndex];
-            const questionText = document.getElementById("question-text");
-            const optionsContainer = document.getElementById("options");
-
-            questionText.textContent = currentQuestion.question;
-            optionsContainer.innerHTML = "";
-
-            currentQuestion.options.forEach(option => {
-                const button = document.createElement("button");
-                button.textContent = option;
-                button.className = "button";
-                button.onclick = () => checkAnswer(option, button);
-                optionsContainer.appendChild(button);
-            });
         }
 
-        function checkAnswer(selectedOption, button) {
-            const currentQuestion = questions[currentQuestionIndex];
-            const statusText = document.getElementById("game-status");
-            const optionsButtons = document.querySelectorAll("#options button");
+        // Función para iniciar el juego
+        function startGame() {
+            timer = setInterval(updateTimer, 1000);
+            loadQuestion();
+        }
 
-            // Disable all buttons after selection
-            optionsButtons.forEach(btn => btn.disabled = true);
+        // Función para cargar la siguiente pregunta con retraso
+        function loadQuestion() {
+            loader.style.display = "block"; // Mostrar la animación de carga
+            setTimeout(() => {
+                loader.style.display = "none"; // Ocultar la animación de carga
+                const current = questions[currentQuestion];
+                questionText.textContent = current.question;
+                optionsContainer.innerHTML = ""; // Limpiar opciones anteriores
 
-            if (selectedOption === currentQuestion.answer) {
+                current.options.forEach(option => {
+                    const optionButton = document.createElement("button");
+                    optionButton.textContent = option;
+                    optionButton.classList.add("button");
+                    optionButton.onclick = () => checkAnswer(option);
+                    optionsContainer.appendChild(optionButton);
+                });
+            }, 3000); // 3 segundos de retraso
+        }
+
+        // Función para comprobar la respuesta
+        function checkAnswer(selectedOption) {
+            const correctAnswer = questions[currentQuestion].answer;
+            if (selectedOption === correctAnswer) {
                 score++;
-                statusText.textContent = "¡Correcto! 🎉";
-                statusText.className = "correct animateMessage";  // Correct message style and animation
+                gameStatus.textContent = "¡Correcto!";
+                gameStatus.classList.add("correct");
+                gameStatus.classList.remove("incorrect");
             } else {
                 lives--;
-                document.getElementById("lives").textContent = `Vidas restantes: ${lives}`;
-                statusText.textContent = "Incorrecto 😢";
-                statusText.className = "incorrect animateMessage";  // Incorrect message style and animation
+                gameStatus.textContent = "¡Incorrecto!";
+                gameStatus.classList.add("incorrect");
+                gameStatus.classList.remove("correct");
             }
-
-            // Show status message
-            statusText.style.display = "block";
-
-            clearInterval(questionTimer);
-            setTimeout(nextQuestion, 1000);
-        }
-
-        function nextQuestion() {
-            currentQuestionIndex++;
-            const statusText = document.getElementById("game-status");
-
-            if (currentQuestionIndex < questions.length) {
-                statusText.style.display = "none"; // Hide message before the next question
-                loadQuestion();
-            } else {
-                endGame(true);
-            }
-        }
-
-        function endGame(won) {
-            clearInterval(totalTimer);
-            const gameContainer = document.getElementById("game-container");
-
-            if (won) {
-                gameContainer.innerHTML = `
-                    <h2>¡Juego Terminado!</h2>
-                    <p>Tu puntuación final es: ${score} / ${questions.length}</p>
-                    <p>¡Felicidades, has ganado! 🎉</p>
-                `;
-            } else {
-                gameContainer.innerHTML = `
-                    <h2>¡Juego Terminado!</h2>
-                    <p>Lo siento, perdiste todas tus vidas. 😢</p>
-                `;
-            }
-
-            gameContainer.innerHTML += `
-                <button class="button" onclick="restartGame()">Reiniciar Juego</button>
-                <button class="button" onclick="goToHome()">Volver al Inicio</button>
-            `;
-        }
-
-        function restartGame() {
-            location.reload();
-        }
-
-        function goToHome() {
-            window.location.href = "index.html"; // Redirige al archivo index.html
-        }
-
-        function startQuestionTimer() {
-            let timeRemaining = questionTimeLimit;
-            const timerElement = document.getElementById("time-left");
-            timerElement.textContent = `Tiempo restante: ${timeRemaining}s`;
-
-            questionTimer = setInterval(() => {
-                timeRemaining--;
-                timerElement.textContent = `Tiempo restante: ${timeRemaining}s`;
-
-                if (timeRemaining <= 0) {
-                    clearInterval(questionTimer);
-                    lives--;
-                    document.getElementById("lives").textContent = `Vidas restantes: ${lives}`;
-                    const statusText = document.getElementById("game-status");
-                    statusText.textContent = "Se acabó el tiempo 😢";
-                    statusText.style.color = "red";
-                    statusText.style.display = "block";
-                    setTimeout(nextQuestion, 1000);
+            gameStatus.classList.add("animateMessage");
+            gameStatus.style.display = "block";
+            setTimeout(() => {
+                gameStatus.style.display = "none";
+                if (lives <= 0 || currentQuestion === questions.length - 1) {
+                    endGame();
+                } else {
+                    currentQuestion++;
+                    loadQuestion();
                 }
-            }, 1000);
+            }, 2000);
+            livesContainer.textContent = `Vidas restantes: ${lives}`;
         }
 
-        function resetQuestionTimer() {
-            clearInterval(questionTimer);
-            document.getElementById("time-left").textContent = `Tiempo restante: ${questionTimeLimit}s`;
+        // Función para terminar el juego
+        function endGame() {
+            clearInterval(timer);
+            gameStatus.textContent = `Fin del juego. Tu puntuación es: ${score}`;
+            gameStatus.classList.remove("animateMessage");
+            gameStatus.style.display = "block";
         }
 
-        // Inicia el juego
-        startTotalTimer();
-        loadQuestion();
+        // Iniciar el juego
+        startGame();
     </script>
 </body>
 </html>
