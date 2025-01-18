@@ -70,106 +70,19 @@
             font-size: 2em;
             margin-top: 20px;
         }
-        .videos {
-            display: flex;
-            justify-content: space-between;
-            margin-top: 20px;
-        }
-        .videos video {
-            max-width: 45%;
-            border-radius: 12px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-        }
         .big-video {
+            display: flex;
+            justify-content: center;
+            align-items: center;
             margin-top: 40px;
+        }
+        .big-video iframe {
             width: 100%;
             max-width: 800px;
-        }
-        #popup {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.7);
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            z-index: 1000;
-        }
-        #popup-content {
-            background: #fff;
-            padding: 20px;
+            height: auto;
+            aspect-ratio: 16 / 9;
             border-radius: 12px;
-            text-align: center;
-            color: #000;
-        }
-        .flower-button {
-            background-color: #ff69b4;
-            border: none;
-            color: white;
-            padding: 10px 20px;
-            text-align: center;
-            text-decoration: none;
-            display: inline-block;
-            font-size: 16px;
-            margin: 4px 2px;
-            cursor: pointer;
-            border-radius: 12px;
-            transition: background-color 0.3s ease;
-        }
-        .flower-button:hover {
-            background-color: #ff1493;
-        }
-        .flower-icon {
-            width: 16px;
-            height: 16px;
-            margin-left: 8px;
-            vertical-align: middle;
-        }
-        .fullscreen {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-color: rgba(0, 0, 0, 0.9);
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            z-index: 2000;
-        }
-        .fullscreen img {
-            max-width: 80%;
-            max-height: 80%;
-            border-radius: 12px;
-            cursor: pointer;
-        }
-        .close {
-            position: absolute;
-            top: 10px;
-            right: 10px;
-            color: #fff;
-            font-size: 24px;
-            cursor: pointer;
-        }
-        @keyframes float {
-            0% {
-                transform: translateY(100vh) translateX(0);
-                opacity: 1;
-            }
-            100% {
-                transform: translateY(-100vh) translateX(0);
-                opacity: 0;
-            }
-        }
-        .heart {
-            position: absolute;
-            width: 24px;
-            height: 24px;
-            background-color: red;
-            clip-path: polygon(50% 0%, 61% 8%, 70% 17%, 75% 25%, 77% 32%, 78% 39%, 76% 46%, 72% 53%, 66% 60%, 59% 66%, 50% 71%, 41% 66%, 34% 60%, 28% 53%, 24% 46%, 22% 39%, 23% 32%, 25% 25%, 30% 17%, 39% 8%);
-            animation: float 5s linear infinite;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
         }
         @media (max-width: 768px) {
             h1 {
@@ -186,19 +99,6 @@
             .gallery img, .gallery video {
                 max-height: 200px;
             }
-            .fullscreen img {
-                max-width: 90%;
-                max-height: 90%;
-            }
-            .videos {
-                flex-direction: column;
-                align-items: center;
-            }
-            .videos video {
-                width: 100%;
-                max-width: 100%;
-                margin-top: 10px;
-            }
         }
     </style>
 </head>
@@ -206,56 +106,38 @@
     <div id="popup">
         <div id="popup-content">
             <p>Antes de todo, muchas gracias por todo estos 9 meses y espero cumplamos más mi amor.</p>
-            <button class="flower-button" onclick="closePopup()">Continuar <img src="flower.png" alt="Flor" class="flower-icon"></button>
+            <button class="button" onclick="closePopup()">Continuar</button>
         </div>
     </div>
 
     <div class="container">
-        <h1>Feliz 9 Meses, Corazon de melon</h1>
+        <h1>Feliz 9 Meses, Corazón de melón</h1>
         <p>Querida Princesa,</p>
-        <p>Han sido 9 meses maravillosos desde que nos conocimos. Cada momento contigo es especial y lleno de felicidad. Me has enseñado lo que significa el verdadero amor y el ser fuerte ante las adversidades. Tu sonrisa ilumina mis días y tu presencia hace que todo sea mejor. Agradezco cada instante que hemos compartido y anhelo muchos más a tu lado. Te quiero mucho y espero que nuestro Amor siga creciendo y fortaleciéndose con el tiempo. ¡Feliz aniversario Mi Amor!</p>
+        <p>Han sido 9 meses maravillosos desde que nos conocimos. Cada momento contigo es especial y lleno de felicidad. Me has enseñado lo que significa el verdadero amor y el ser fuerte ante las adversidades. Tu sonrisa ilumina mis días y tu presencia hace que todo sea mejor. Agradezco cada instante que hemos compartido y anhelo muchos más a tu lado. Te quiero mucho y espero que nuestro amor siga creciendo y fortaleciéndose con el tiempo. ¡Feliz aniversario, mi amor!</p>
         <button class="button" onclick="showLoveMessage()">Haz clic aquí</button>
         <div id="loveMessage" class="hidden">
             <p id="loveText"></p>
-            <button class="flower-button" onclick="showFinalMessage()">Se que esto no es mucho pero es de corazon 💝💖</button>
+            <button class="button" onclick="showFinalMessage()">Esto es de corazón 💝</button>
         </div>
-        
+
         <div class="gallery">
-            <h2 class="section-title"></h2>
+            <h2 class="section-title">Momentos especiales</h2>
             <img src="foto1.jpg" alt="Foto 1" onclick="openFullscreen('foto1.jpg')">
             <img src="foto2.jpg" alt="Foto 2" onclick="openFullscreen('foto2.jpg')">
             <img src="foto3.jpg" alt="Foto 3" onclick="openFullscreen('foto3.jpg')">
         </div>
-        
-        <div class="gallery">
-            <h2 class="section-title"></h2>
-            <div class="videos">
-                <video controls>
-                    <source src="tu-video.mp4" type="video/mp4">
-                    Tu navegador no soporta la reproducción de videos.
-                </video>
-                <video controls>
-                    <source src="video2.mp4" type="video/mp4">
-                    Tu navegador no soporta la reproducción de videos.
-                </video>
-            </div>
-        </div>
-        
-        <div class="big-video">
-    <iframe width="560" height="315" src="https://www.youtube.com/embed/vr30B0UeMmE" 
-            title="YouTube video player" frameborder="0" 
-            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
-            allowfullscreen>
-    </iframe>
-</div>
 
+        <div class="big-video">
+            <iframe 
+                src="https://www.youtube.com/embed/vr30B0UeMmE" 
+                title="YouTube video player" 
+                frameborder="0" 
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+                allowfullscreen>
+            </iframe>
+        </div>
     </div>
-    
-    <div id="fullscreen" class="fullscreen" onclick="closeFullscreen()">
-        <span class="close" onclick="closeFullscreen()">&times;</span>
-        <img id="fullscreenImg" src="" alt="Imagen en pantalla completa">
-    </div>
-    
+
     <script>
         function closePopup() {
             document.getElementById('popup').style.display = 'none';
@@ -263,22 +145,12 @@
 
         function showLoveMessage() {
             const loveText = document.getElementById('loveText');
-            loveText.innerText = "Querida princesa, tu amor y tu Cariño han sido un regalo increíble en mi vida. ¡Te Amo muchísimo!";
+            loveText.innerText = "Querida princesa, tu amor y tu cariño han sido un regalo increíble en mi vida. ¡Te amo muchísimo!";
             document.getElementById('loveMessage').classList.remove('hidden');
         }
 
-        function openFullscreen(src) {
-            const fullscreenImg = document.getElementById('fullscreenImg');
-            fullscreenImg.src = src;
-            document.getElementById('fullscreen').style.display = 'flex';
-        }
-
-        function closeFullscreen() {
-            document.getElementById('fullscreen').style.display = 'none';
-        }
-
         function showFinalMessage() {
-            alert("¡Gracias por estos 9 meses Tan Especiales! Te amo, Mylove.");
+            alert("¡Gracias por estos 9 meses tan especiales! Te amo, mi amor.");
         }
     </script>
 </body>
