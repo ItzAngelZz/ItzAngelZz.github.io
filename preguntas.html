@@ -167,6 +167,30 @@
         .end-buttons {
             margin-top: 20px;
         }
+
+        /* Animación de carga de la pregunta */
+        .loader {
+            margin: auto;
+            position: relative;
+            width: 50px;
+            height: 50px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .box1, .box2, .box3 {
+            width: 15px;
+            height: 15px;
+            background-color: white;
+            border-radius: 50%;
+            animation: bounce 0.6s infinite alternate;
+        }
+        .box2 {
+            animation-delay: 0.2s;
+        }
+        .box3 {
+            animation-delay: 0.4s;
+        }
     </style>
 </head>
 <body>
@@ -251,7 +275,7 @@
         let lives = 3;
         let totalTime = 30;
         let timePlayed = 0;
-        let timer;
+        let questionTimer;
 
         const questionText = document.getElementById("question-text");
         const optionsContainer = document.getElementById("options");
@@ -261,23 +285,30 @@
         const timePlayedContainer = document.getElementById("time-played");
         const timeLeftContainer = document.getElementById("time-left");
 
-        function updateTimer() {
+        function updateGameTimer() {
+            timePlayed++;
+            timePlayedContainer.textContent = `Tiempo jugado: ${timePlayed}s`;
+        }
+
+        function updateQuestionTimer() {
             if (totalTime > 0) {
                 totalTime--;
                 timeLeftContainer.textContent = `Tiempo restante: ${totalTime}s`;
             } else {
-                clearInterval(timer);
-                endGame(false); // Se acaba el tiempo
+                clearInterval(questionTimer);
+                endGame(false); // Se acaba el tiempo de la pregunta
             }
         }
 
         function startGame() {
-            timer = setInterval(updateTimer, 1000);
+            setInterval(updateGameTimer, 1000); // Timer general para todo el juego
             loadQuestion();
         }
 
         function loadQuestion() {
             loader.style.display = "block";
+            totalTime = 30; // Reinicia el temporizador para la nueva pregunta
+            questionTimer = setInterval(updateQuestionTimer, 1000);
             setTimeout(() => {
                 loader.style.display = "none";
                 const current = questions[currentQuestion];
@@ -291,7 +322,7 @@
                     optionButton.onclick = () => checkAnswer(option);
                     optionsContainer.appendChild(optionButton);
                 });
-            }, 3000);
+            }, 3000); // Espera antes de cargar la pregunta
         }
 
         function checkAnswer(selectedOption) {
@@ -322,7 +353,7 @@
         }
 
         function endGame(won) {
-            clearInterval(timer);
+            clearInterval(questionTimer); // Detener el temporizador de la pregunta
             const gameContainer = document.getElementById("game-container");
 
             if (won) {
