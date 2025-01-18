@@ -378,6 +378,10 @@
 </div>
 
 
+    <div style="text-align: center; margin-top: 50px;">
+    <button id="startGameButton" class="button" onclick="redirectToGame()">Entrar al juego</button>
+</div>
+
 
     <script>
         function checkPassword() {
@@ -402,6 +406,11 @@
         kitty.style.animationDuration = Math.random() * 5 + 5 + 's'; // Duración entre 5 y 10 segundos
         kittiesContainer.appendChild(kitty);
     }
+
+    function redirectToGame() {
+    window.location.href = "juego.html";
+}
+
     </script>
 </body>
 </html>
