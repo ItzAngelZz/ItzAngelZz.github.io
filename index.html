@@ -11,26 +11,25 @@
             font-family: 'Arial', sans-serif;
             text-align: center;
             color: #fff;
-            overflow: auto;
+            overflow: hidden; /* Oculta el scroll */
             margin: 0;
             padding: 0;
         }
 
         /* Ventana de la contraseña */
-#password-popup {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: #fff; /* Cambiado a blanco sólido */
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    z-index: 2000;
-    overflow: hidden; /* Asegura que no se vea nada detrás */
-}
-
+        #password-popup {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(to right, #00c6ff, #0072ff); /* degradado con  color fav */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 2000;
+            overflow: hidden; /* Asegura que no se vea nada detrás */
+        }
 
         #password-content {
             background: #fff;
@@ -71,52 +70,20 @@
             font-weight: bold;
         }
 
-        /* Contenedor de corazones */
-        .falling-hearts {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            pointer-events: none; /* No bloquea clics */
-            overflow: hidden;
-        }
-
-        /* Corazones individuales */
-        .falling-hearts::before,
-        .falling-hearts::after {
-            content: '';
+        /* Contenedor de las Hello Kitty */
+        .hello-kitty {
             position: absolute;
-            width: 20px;
-            height: 20px;
-            background-color: #00bfff;
-            clip-path: polygon(50% 0%, 61% 8%, 70% 17%, 75% 25%, 77% 32%, 78% 39%, 76% 46%, 72% 53%, 66% 60%, 59% 66%, 50% 71%, 41% 66%, 34% 60%, 28% 53%, 24% 46%, 22% 39%, 23% 32%, 25% 25%, 30% 17%, 39% 8%);
-            animation: fall infinite linear;
+            width: 80px; /* Tamaño de las imágenes */
+            animation: moveDown 5s linear infinite; /* Animación infinita */
         }
 
-        /* Generación de corazones con posiciones y animaciones aleatorias */
-        .falling-hearts::before {
-            animation-duration: 5s;
-            animation-delay: 0s;
-            left: 20%;
-        }
-        .falling-hearts::after {
-            animation-duration: 6s;
-            animation-delay: 1s;
-            left: 70%;
-        }
-
-        /* Animación de caída */
-        @keyframes fall {
+        /* Animación para que las imágenes se muevan de arriba a abajo */
+        @keyframes moveDown {
             0% {
-                top: -10%;
-                transform: translateX(0) rotate(0deg);
-                opacity: 1;
+                top: -100px; /* Inicia fuera de la pantalla */
             }
             100% {
-                top: 110%;
-                transform: translateX(20px) rotate(360deg);
-                opacity: 0;
+                top: 110vh; /* Llega al final de la pantalla */
             }
         }
 
@@ -154,197 +121,37 @@
         .button:hover {
             background-color: #0056b3; /* Azul más oscuro */
         }
+
         .hidden {
             display: none;
-        }
-
-        .gallery {
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: center;
-            gap: 10px;
-            margin-top: 20px;
-        }
-
-        .gallery img, .gallery video {
-            max-width: 100%;
-            max-height: 300px;
-            border-radius: 12px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-            transform: rotate(-3deg);
-            cursor: pointer;
-        }
-
-        .gallery img:hover, .gallery video:hover {
-            transform: scale(1.1);
-            transition: transform 0.3s ease;
-        }
-
-        .section-title {
-            font-size: 2em;
-            margin-top: 20px;
-        }
-
-        .videos {
-            display: flex;
-            justify-content: space-between;
-            margin-top: 20px;
-        }
-
-        .videos video {
-            max-width: 45%;
-            border-radius: 12px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-        }
-
-        .big-video {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            margin-top: 40px;
-        }
-
-        .big-video iframe {
-            width: 100%;
-            max-width: 800px;
-            height: auto;
-            aspect-ratio: 16 / 9;
-            border-radius: 12px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
-        }
-
-        #fullscreen {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-color: rgba(0, 0, 0, 0.9);
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            z-index: 2000;
-        }
-
-        .fullscreen img {
-            max-width: 80%;
-            max-height: 80%;
-            border-radius: 12px;
-            cursor: pointer;
-        }
-
-        .close {
-            position: absolute;
-            top: 10px;
-            right: 10px;
-            color: #fff;
-            font-size: 24px;
-            cursor: pointer;
-        }
-
-        @keyframes float {
-            0% {
-                transform: translateY(100vh) translateX(0);
-                opacity: 1;
-            }
-            100% {
-                transform: translateY(-100vh) translateX(0);
-                opacity: 0;
-            }
-        }
-
-        .heart {
-            position: absolute;
-            width: 24px;
-            height: 24px;
-            background-color: red;
-            clip-path: polygon(50% 0%, 61% 8%, 70% 17%, 75% 25%, 77% 32%, 78% 39%, 76% 46%, 72% 53%, 66% 60%, 59% 66%, 50% 71%, 41% 66%, 34% 60%, 28% 53%, 24% 46%, 22% 39%, 23% 32%, 25% 25%, 30% 17%, 39% 8%);
-            animation: float 5s linear infinite;
-        }
-
-        @media (max-width: 768px) {
-            h1 {
-                font-size: 2em;
-            }
-
-            p {
-                font-size: 1em;
-                line-height: 1.4;
-            }
-
-            .button {
-                font-size: 14px;
-                padding: 12px 24px;
-            }
-
-            .gallery img, .gallery video {
-                max-height: 200px;
-            }
-
-            .fullscreen img {
-                max-width: 90%;
-                max-height: 90%;
-            }
-
-            .videos {
-                flex-direction: column;
-                align-items: center;
-            }
-
-            .videos video {
-                width: 100%;
-                max-width: 100%;
-                margin-top: 10px;
-            }
         }
     </style>
 </head>
 <body>
     <!-- Ventana de la contraseña -->
     <div id="password-popup">
-    <div id="password-content">
-        <h2>Introduce la contraseña para continuar:</h2>
-        <input type="password" id="password" placeholder="aun no es hora">
-        <button onclick="checkPassword()">Entrar</button>
-        <p id="error-message" class="hidden"></p>
+        <div id="password-content">
+            <h2>Introduce la contraseña para continuar:</h2>
+            <input type="password" id="password" placeholder="aun no es hora">
+            <button onclick="checkPassword()">Entrar</button>
+            <p id="error-message" class="hidden"></p>
+        </div>
     </div>
-</div>
-
 
     <!-- Contenido de la página -->
     <div class="container">
-        <h1>Feliz 9 Meses, Corazon de melon</h1>
+        <h1>Feliz 9 Meses, Corazon de melón</h1>
         <p>Querida Princesa,</p>
-        <p>Han sido 9 meses maravillosos desde que nos conocimos. Cada momento contigo es especial y lleno de felicidad. Me has enseñado lo que significa el verdadero amor y el ser fuerte ante las adversidades. Tu sonrisa ilumina mis días y tu presencia hace que todo sea mejor. Agradezco cada instante que hemos compartido y anhelo muchos más a tu lado. Te quiero mucho y espero que nuestro Amor siga creciendo y fortaleciéndose con el tiempo. ¡Feliz aniversario Mi Amor!</p>
+        <p>Han sido 9 meses maravillosos desde que nos conocimos...</p>
         <button class="button" onclick="showLoveMessage()">Haz clic aquí</button>
-        <div id="loveMessage" class="hidden">
-            <p id="loveText"></p>
-            <button class="flower-button" onclick="showFinalMessage()">Se que esto no es mucho pero es de corazon 💝💖</button>
-        </div>
-        <div class="gallery">
-            <h2 class="section-title"></h2>
-            <img src="27E89A51-9466-462A-A113-6A66C1B0312D.jpeg" alt="Foto 1" onclick="openFullscreen('foto1.jpg')">
-            <img src="EAA061DC-3C0A-45F0-A66A-01A055547EDD.jpeg" alt="Foto 2" onclick="openFullscreen('foto2.jpg')">
-            <img src="IMG_0336.jpeg" alt="Foto 3" onclick="openFullscreen('foto3.jpg')">
-        </div>
-
-        <div class="gallery">
-            <h2 class="section-title">Videos especiales</h2>
-            <div class="videos">
-                <video width="300" controls>
-                    <source src="video1.mp4" type="video/mp4">
-                </video>
-                <video width="300" controls>
-                    <source src="video2.mp4" type="video/mp4">
-                </video>
-            </div>
-        </div>
-
-        <div class="big-video">
-            <iframe src="https://www.youtube.com/embed/vr30B0UeMmE" title="Feliz 9 Meses" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
-        </div>
-
     </div>
+
+    <!-- Animación de Hello Kitty -->
+    <img src="hellokitty.png" class="hello-kitty" style="left: 10%;">
+    <img src="hellokitty.png" class="hello-kitty" style="left: 30%;">
+    <img src="hellokitty.png" class="hello-kitty" style="left: 50%;">
+    <img src="hellokitty.png" class="hello-kitty" style="left: 70%;">
+    <img src="hellokitty.png" class="hello-kitty" style="left: 90%;">
 
     <script>
         function checkPassword() {
@@ -359,6 +166,14 @@
                 errorMessage.classList.remove('hidden');
             }
         }
+
+        // Duplicar las imágenes dinámicamente para mantener el efecto infinito
+        const images = document.querySelectorAll('.hello-kitty');
+        images.forEach(img => {
+            const clone = img.cloneNode(true);
+            clone.style.animationDelay = Math.random() * 2 + "s"; // Diferentes tiempos de inicio
+            document.body.appendChild(clone);
+        });
     </script>
 </body>
 </html>
