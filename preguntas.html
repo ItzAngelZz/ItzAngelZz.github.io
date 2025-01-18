@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Juego de Preguntas</title>
+    <style>
+        body {
+            background: linear-gradient(to right, #00c6ff, #0072ff);
+            font-family: 'Arial', sans-serif;
+            color: #fff;
+            text-align: center;
+            margin: 0;
+            padding: 20px;
+        }
+        .question-container {
+            margin: 20px auto;
+            padding: 20px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 12px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+        button {
+            background-color: #007bff;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 12px;
+            cursor: pointer;
+            font-size: 16px;
+            margin-top: 20px;
+            transition: background-color 0.3s;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+        .hidden {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <h1>Juego de Preguntas</h1>
+    <div id="game-container">
+        <div id="question-container" class="question-container">
+            <p id="question-text">Cargando pregunta...</p>
+            <div id="options"></div>
+        </div>
+        <button id="next-button" class="hidden" onclick="nextQuestion()">Siguiente Pregunta</button>
+        <p id="game-status"></p>
+    </div>
+
+    <script>
+        const questions = [
+            {
+                question: "¿Cuál es el color favorito de Gabriela?",
+                options: ["Rojo", "Azul", "Morado", "Rosa"],
+                answer: "Rosa"
+            },
+            {
+                question: "¿Cuándo fue nuestra primera cita?",
+                options: ["14 de Febrero", "24 de Abril", "1 de Mayo", "31 de Diciembre"],
+                answer: "24 de Abril"
+            },
+            {
+                question: "¿Cómo me llamas cariñosamente?",
+                options: ["Corazón de melón", "Mi Reina", "Mi Amor", "Todas las anteriores"],
+                answer: "Todas las anteriores"
+            }
+        ];
+
+        let currentQuestionIndex = 0;
+        let score = 0;
+
+        function loadQuestion() {
+            const currentQuestion = questions[currentQuestionIndex];
+            const questionText = document.getElementById("question-text");
+            const optionsContainer = document.getElementById("options");
+
+            questionText.textContent = currentQuestion.question;
+            optionsContainer.innerHTML = "";
+
+            currentQuestion.options.forEach(option => {
+                const button = document.createElement("button");
+                button.textContent = option;
+                button.onclick = () => checkAnswer(option);
+                optionsContainer.appendChild(button);
+            });
+        }
+
+        function checkAnswer(selectedOption) {
+            const currentQuestion = questions[currentQuestionIndex];
+            const statusText = document.getElementById("game-status");
+
+            if (selectedOption === currentQuestion.answer) {
+                score++;
+                statusText.textContent = "¡Correcto! 🎉";
+                statusText.style.color = "lightgreen";
+            } else {
+                statusText.textContent = "Incorrecto 😢";
+                statusText.style.color = "red";
+            }
+
+            document.getElementById("next-button").classList.remove("hidden");
+        }
+
+        function nextQuestion() {
+            currentQuestionIndex++;
+            const statusText = document.getElementById("game-status");
+            const nextButton = document.getElementById("next-button");
+
+            if (currentQuestionIndex < questions.length) {
+                statusText.textContent = "";
+                nextButton.classList.add("hidden");
+                loadQuestion();
+            } else {
+                endGame();
+            }
+        }
+
+        function endGame() {
+            const gameContainer = document.getElementById("game-container");
+            gameContainer.innerHTML = `
+                <h2>¡Juego Terminado!</h2>
+                <p>Tu puntuación final es: ${score} / ${questions.length}</p>
+                <p>¡Gracias por jugar! 💖</p>
+            `;
+        }
+
+        // Inicializa la primera pregunta al cargar la página
+        loadQuestion();
+    </script>
+</body>
+</html>
