@@ -9,20 +9,35 @@
             background: linear-gradient(to right, #00c6ff, #0072ff);
             font-family: 'Arial', sans-serif;
             color: #fff;
-            text-align: center;
             margin: 0;
             padding: 20px;
         }
+        #timers {
+            display: flex;
+            justify-content: space-between;
+            padding: 10px 20px;
+            position: fixed;
+            top: 0;
+            width: 100%;
+        }
+        .timer-box {
+            background: rgba(0, 0, 0, 0.8);
+            border-radius: 8px;
+            padding: 10px 20px;
+            font-size: 18px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
         .question-container {
-            margin: 20px auto;
+            margin: 80px auto;
             padding: 20px;
             background: rgba(255, 255, 255, 0.1);
             border-radius: 12px;
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            text-align: center;
         }
         .button {
             position: relative;
-            width: 120px;
+            width: 150px;
             height: 40px;
             background-color: #000;
             display: flex;
@@ -31,12 +46,12 @@
             flex-direction: column;
             justify-content: center;
             border: none;
+            margin: 15px 0;
             padding: 12px;
             gap: 12px;
             border-radius: 8px;
             cursor: pointer;
         }
-
         .button::before {
             content: '';
             position: absolute;
@@ -44,7 +59,7 @@
             left: -4px;
             top: -1px;
             margin: auto;
-            width: 128px;
+            width: 160px;
             height: 48px;
             border-radius: 10px;
             background: linear-gradient(-45deg, #e81cff 0%, #40c9ff 100%);
@@ -52,7 +67,6 @@
             pointer-events: none;
             transition: all 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275);
         }
-
         .button::after {
             content: "";
             z-index: -1;
@@ -62,29 +76,34 @@
             transform: translate3d(0, 0, 0) scale(0.95);
             filter: blur(20px);
         }
-
         .button:hover::after {
             filter: blur(30px);
         }
-
         .button:hover::before {
             transform: rotate(-180deg);
         }
-
         .button:active::before {
             scale: 0.7;
         }
-
-        #timer {
+        #game-status {
             font-size: 20px;
-            margin-bottom: 20px;
+            margin-top: 20px;
+        }
+        #lives {
+            margin: 10px;
+            font-size: 18px;
+            color: lightcoral;
         }
     </style>
 </head>
 <body>
+    <div id="timers">
+        <div id="time-played" class="timer-box">Tiempo jugando: 0s</div>
+        <div id="time-left" class="timer-box">Tiempo restante: 30s</div>
+    </div>
     <h1>Juego de Preguntas</h1>
-    <div id="timer">Tiempo restante: 30 segundos</div>
     <div id="game-container">
+        <div id="lives">Vidas restantes: 3</div>
         <div id="question-container" class="question-container">
             <p id="question-text">Cargando pregunta...</p>
             <div id="options"></div>
@@ -113,12 +132,29 @@
 
         let currentQuestionIndex = 0;
         let score = 0;
-        let timer;
-        const timeLimit = 30;
+        let lives = 3;
+        let questionTimer;
+        let totalTimePlaying = 0;
+        let totalTimer;
+        const questionTimeLimit = 30;
+
+        function updateTotalTimePlaying() {
+            totalTimePlaying++;
+            document.getElementById("time-played").textContent = `Tiempo jugando: ${totalTimePlaying}s`;
+        }
+
+        function startTotalTimer() {
+            totalTimer = setInterval(updateTotalTimePlaying, 1000);
+        }
 
         function loadQuestion() {
-            resetTimer();
-            startTimer();
+            if (lives === 0) {
+                endGame(false);
+                return;
+            }
+
+            resetQuestionTimer();
+            startQuestionTimer();
 
             const currentQuestion = questions[currentQuestionIndex];
             const questionText = document.getElementById("question-text");
@@ -149,11 +185,13 @@
                 statusText.textContent = "¡Correcto! 🎉";
                 statusText.style.color = "lightgreen";
             } else {
+                lives--;
+                document.getElementById("lives").textContent = `Vidas restantes: ${lives}`;
                 statusText.textContent = "Incorrecto 😢";
                 statusText.style.color = "red";
             }
 
-            clearInterval(timer);
+            clearInterval(questionTimer);
             setTimeout(nextQuestion, 1000);
         }
 
@@ -165,40 +203,54 @@
                 statusText.textContent = "";
                 loadQuestion();
             } else {
-                endGame();
+                endGame(true);
             }
         }
 
-        function endGame() {
+        function endGame(won) {
+            clearInterval(totalTimer);
             const gameContainer = document.getElementById("game-container");
-            const percentage = (score / questions.length) * 100;
 
-            if (percentage >= 90) {
+            if (won) {
                 gameContainer.innerHTML = `
                     <h2>¡Juego Terminado!</h2>
-                    <p>Tu puntuación final es: ${score} / ${questions.length} (${percentage.toFixed(2)}%)</p>
+                    <p>Tu puntuación final es: ${score} / ${questions.length}</p>
                     <p>¡Felicidades, has ganado! 🎉</p>
                 `;
             } else {
                 gameContainer.innerHTML = `
                     <h2>¡Juego Terminado!</h2>
-                    <p>Tu puntuación final es: ${score} / ${questions.length} (${percentage.toFixed(2)}%)</p>
-                    <p>Lo siento, no alcanzaste el 90%. 😢</p>
+                    <p>Lo siento, perdiste todas tus vidas. 😢</p>
                 `;
             }
+
+            gameContainer.innerHTML += `
+                <button class="button" onclick="restartGame()">Reiniciar Juego</button>
+                <button class="button" onclick="goToHome()">Volver al Inicio</button>
+            `;
         }
 
-        function startTimer() {
-            let timeRemaining = timeLimit;
-            const timerElement = document.getElementById("timer");
-            timerElement.textContent = `Tiempo restante: ${timeRemaining} segundos`;
+        function restartGame() {
+            location.reload();
+        }
 
-            timer = setInterval(() => {
+        function goToHome() {
+            alert("Volver al inicio. Aquí agregarías la lógica para redirigir al usuario.");
+        }
+
+        function startQuestionTimer() {
+            let timeRemaining = questionTimeLimit;
+            const timerElement = document.getElementById("time-left");
+            timerElement.textContent = `Tiempo restante: ${timeRemaining}s`;
+
+            questionTimer = setInterval(() => {
                 timeRemaining--;
-                timerElement.textContent = `Tiempo restante: ${timeRemaining} segundos`;
+                timerElement.textContent = `Tiempo restante: ${timeRemaining}s`;
 
                 if (timeRemaining <= 0) {
-                    clearInterval(timer);
+                    clearInterval(questionTimer);
+                    lives--;
+                    document.getElementById("lives").textContent = `Vidas restantes: ${lives}`;
                     const statusText = document.getElementById("game-status");
                     statusText.textContent = "Se acabó el tiempo 😢";
                     statusText.style.color = "red";
@@ -207,12 +259,13 @@
             }, 1000);
         }
 
-        function resetTimer() {
-            clearInterval(timer);
-            document.getElementById("timer").textContent = `Tiempo restante: ${timeLimit} segundos`;
+        function resetQuestionTimer() {
+            clearInterval(questionTimer);
+            document.getElementById("time-left").textContent = `Tiempo restante: ${questionTimeLimit}s`;
         }
 
-        // Inicializa la primera pregunta al cargar la página
+        // Inicia el juego
+        startTotalTimer();
         loadQuestion();
     </script>
 </body>
