@@ -298,20 +298,25 @@
             }
         }
 
-        .hello-kitty {
-    position: absolute;
+        /* Estilo para las Hello Kitty */
+.hello-kitty {
+    position: fixed; /* Fijo para que siempre caigan en pantalla */
     width: 80px; /* Tamaño de las imágenes */
-    animation: moveDown 5s linear infinite; /* Animación infinita */
+    z-index: -1; /* Se colocan detrás de todos los elementos */
+    animation: moveDown 8s linear infinite; /* Animación infinita */
+    opacity: 0.7; /* Transparencia */
 }
 
+/* Animación de caída */
 @keyframes moveDown {
     0% {
-        top: -100px; /* Inicia fuera de la pantalla */
+        top: -100px; /* Empieza fuera de la pantalla */
     }
     100% {
-        top: 100vh; /* Llega al final de la pantalla */
+        top: 100vh; /* Termina en la parte inferior visible */
     }
 }
+
 
         
     </style>
@@ -363,12 +368,15 @@
 
     </div>
 
-    <!-- Imágenes de Hello Kitty animadas -->
-<img src="hellokitty.png" class="hello-kitty" style="left: 10%;">
-<img src="hellokitty.png" class="hello-kitty" style="left: 30%;">
-<img src="hellokitty.png" class="hello-kitty" style="left: 50%;">
-<img src="hellokitty.png" class="hello-kitty" style="left: 70%;">
-<img src="hellokitty.png" class="hello-kitty" style="left: 90%;">
+<!-- Contenedor de Hello Kitty animadas -->
+<div class="falling-kitties">
+    <img src="hellokitty.png" class="hello-kitty" style="left: 10%;">
+    <img src="hellokitty.png" class="hello-kitty" style="left: 30%;">
+    <img src="hellokitty.png" class="hello-kitty" style="left: 50%;">
+    <img src="hellokitty.png" class="hello-kitty" style="left: 70%;">
+    <img src="hellokitty.png" class="hello-kitty" style="left: 90%;">
+</div>
+
 
 
     <script>
@@ -385,13 +393,18 @@
             }
         }
 
-        // Duplica las imágenes dinámicamente para mantener el efecto infinito
-const images = document.querySelectorAll('.hello-kitty');
-images.forEach(img => {
-    const clone = img.cloneNode(true);
-    clone.style.animationDelay = Math.random() * 2 + "s"; // Diferentes tiempos de inicio
-    document.body.appendChild(clone);
-});
+        <script>
+    const kittiesContainer = document.querySelector('.falling-kitties');
+    for (let i = 0; i < 10; i++) { // Genera 10 imágenes dinámicamente
+        const kitty = document.createElement('img');
+        kitty.src = "hellokitty.png"; // Ruta de tu imagen
+        kitty.className = 'hello-kitty';
+        kitty.style.left = Math.random() * 100 + '%'; // Posición horizontal aleatoria
+        kitty.style.animationDuration = Math.random() * 5 + 5 + 's'; // Duración entre 5 y 10 segundos
+        kittiesContainer.appendChild(kitty);
+    }
+</script>
+
 
         
     </script>
