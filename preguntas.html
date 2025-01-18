@@ -12,12 +12,16 @@
             margin: 0;
             padding: 20px;
         }
+        #game-container {
+            margin-top: 100px;
+            text-align: center;
+        }
         #timers {
             display: flex;
             justify-content: space-between;
             padding: 10px 20px;
             position: fixed;
-            top: 0;
+            bottom: 0;
             width: 100%;
         }
         .timer-box {
@@ -33,7 +37,6 @@
             background: rgba(255, 255, 255, 0.1);
             border-radius: 12px;
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-            text-align: center;
         }
         .button {
             position: relative;
@@ -97,10 +100,6 @@
     </style>
 </head>
 <body>
-    <div id="timers">
-        <div id="time-played" class="timer-box">Tiempo jugando: 0s</div>
-        <div id="time-left" class="timer-box">Tiempo restante: 30s</div>
-    </div>
     <h1>Juego de Preguntas</h1>
     <div id="game-container">
         <div id="lives">Vidas restantes: 3</div>
@@ -109,6 +108,11 @@
             <div id="options"></div>
         </div>
         <p id="game-status"></p>
+    </div>
+
+    <div id="timers">
+        <div id="time-played" class="timer-box">Tiempo jugando: 0s</div>
+        <div id="time-left" class="timer-box">Tiempo restante: 30s</div>
     </div>
 
     <script>
